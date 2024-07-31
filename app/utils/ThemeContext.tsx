@@ -1,63 +1,40 @@
-"use client";
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getWeek, subHours } from 'date-fns';
-import '../../i18n';
-import { useTranslation } from "react-i18next";
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
-interface ThemeContextType {
+interface ThemeContextProps {
     theme: string;
     toggleTheme: () => void;
     locale: string;
-    toggleLocale: () => void;
-    weekNumber: number;
+    setLocale: (locale: string) => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { t, i18n } = useTranslation();
-    const [theme, setTheme] = useState<string>('');
-    const [locale, setLocale] = useState<string>('en');
-    const [weekNumber, setWeekNumber] = useState<number>(0);
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+    const [theme, setTheme] = useState('light');
+    const [locale, setLocaleState] = useState('en');
 
     useEffect(() => {
-        // Проверяем, есть ли тема и локаль в localStorage при инициализации
         const storedTheme = localStorage.getItem('theme');
-        if (storedTheme) {
-            setTheme(storedTheme);
-        }
         const storedLocale = localStorage.getItem('locale');
-        if (storedLocale) {
-            setLocale(storedLocale);
-            i18n.changeLanguage(storedLocale);
-        }
-    }, [i18n]);
-
-    useEffect(() => {
-        // Применяем тему к body и сохраняем в localStorage
-        document.body.className = theme;
-        localStorage.setItem('theme', theme);
-    }, [theme]);
-
-    useEffect(() => {
-        // Сохраняем локаль в localStorage
-        localStorage.setItem('locale', locale);
-    }, [locale]);
+        if (storedTheme) setTheme(storedTheme);
+        if (storedLocale) setLocaleState(storedLocale);
+    }, []);
 
     const toggleTheme = () => {
-        setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-    };
-
-    const toggleLocale = () => {
-        setLocale((prevLocale) => {
-            const newLocale = prevLocale === 'en' ? 'ru' : 'en';
-            i18n.changeLanguage(newLocale);
-            return newLocale;
+        setTheme((prevTheme) => {
+            const newTheme = prevTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            return newTheme;
         });
     };
 
+    const setLocale = (locale: string) => {
+        setLocaleState(locale);
+        localStorage.setItem('locale', locale);
+    };
+
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme, locale, toggleLocale, weekNumber }}>
+        <ThemeContext.Provider value={{ theme, toggleTheme, locale, setLocale }}>
             {children}
         </ThemeContext.Provider>
     );

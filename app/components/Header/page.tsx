@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.css';
@@ -9,8 +9,25 @@ import { useTranslation } from 'react-i18next';
 
 const Header: React.FC = () => {
     const currentWeekNumber = 31;
-    const { theme, toggleTheme, locale, toggleLocale } = useTheme();
-    const { t } = useTranslation();
+    const { theme, toggleTheme, locale, setLocale } = useTheme();
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        i18n.changeLanguage(locale);
+    }, [locale, i18n]);
+
+    useEffect(() => {
+        document.body.className = theme;
+    }, [theme]);
+
+    const handleLocaleToggle = () => {
+        const newLocale = i18n.language === 'en' ? 'ru' : 'en';
+        setLocale(newLocale);
+    };
+
+    const handleThemeToggle = () => {
+        toggleTheme();
+    };
 
     return (
         <header className={styles.header}>
@@ -32,11 +49,11 @@ const Header: React.FC = () => {
             <div className={styles.right_block}>
                 <p className={styles.weekNumber}>{t('currentWeek')}: {currentWeekNumber}</p>
                 <div className={styles.buttons}>
-                    <button className={styles.button} onClick={toggleLocale}>
-                        {locale === 'en' ? 'RU' : 'EN'}
+                    <button className={styles.button} onClick={handleLocaleToggle}>
+                        {i18n.language === 'en' ? 'RU' : 'EN'}
                     </button>
-                    <button className={styles.button} onClick={toggleTheme}>
-                        {theme === 'light' ? 'Dark': 'Light'}
+                    <button className={styles.button2} onClick={handleThemeToggle}>
+                        {theme === 'light' ? t('dark') : t('light')}
                     </button>
                 </div>
             </div>

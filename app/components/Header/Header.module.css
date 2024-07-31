@@ -30,6 +30,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    min-width: 150px;
 }
 
 .weekNumber {
@@ -50,9 +51,21 @@
     cursor: pointer;
     border-radius: 0.25rem;
     transition: background-color 0.3s ease;
+
+   }
+.button2 {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+    width: 100px;
 }
 
-.button:hover {
+
+.button:hover, .button2:hover {
     background-color: #dddddd;
 }
 
