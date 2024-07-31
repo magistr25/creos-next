@@ -1,0 +1,70 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: #5466f4;
+    color: white;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.header a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.title {
+    margin: 0 1rem;
+    font-size: 1.5rem;
+}
+
+.right_block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.weekNumber {
+    margin-left: auto;
+    margin-right: 1rem;
+}
+
+.buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #dddddd;
+}
+
+@media (max-width: 430px) {
+    .right_block {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .weekNumber {
+        margin: 0 0 0.5rem 0;
+    }
+
+    .buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
