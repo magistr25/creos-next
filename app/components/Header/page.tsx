@@ -5,10 +5,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.css';
 import { useTheme } from '../../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const Header: React.FC = () => {
     const currentWeekNumber = 31;
-    const { theme, toggleTheme } = useTheme();
+    const { theme, toggleTheme, locale, toggleLocale } = useTheme();
+    const { t } = useTranslation();
 
     return (
         <header className={styles.header}>
@@ -28,11 +30,13 @@ const Header: React.FC = () => {
                 <h1 className={styles.title}>Creos CRM</h1>
             </div>
             <div className={styles.right_block}>
-                <p className={styles.weekNumber}>Current week: {currentWeekNumber}</p>
+                <p className={styles.weekNumber}>{t('currentWeek')}: {currentWeekNumber}</p>
                 <div className={styles.buttons}>
-                    <button className={styles.button}>RU</button>
+                    <button className={styles.button} onClick={toggleLocale}>
+                        {locale === 'en' ? 'RU' : 'EN'}
+                    </button>
                     <button className={styles.button} onClick={toggleTheme}>
-                        {theme === 'light' ? 'Dark' : 'Light'}
+                        {theme === 'light' ? 'Dark': 'Light'}
                     </button>
                 </div>
             </div>
