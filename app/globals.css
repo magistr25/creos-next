@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+  --color-light: #ffffff;
+  --color-dark: #343a40;
+  --color-primary: #646cff;
+  --color-primary-hover: #535bf2;
+  --background-light: #f0f0f0;
+  --background-dark: #343a40;
+  --header-background: #535bf2;
+  --background-light-theme: #c8e0ff; /* Бледно-голубой цвет */
+  --card-shadow-light: 0 8px 16px rgba(0, 0, 0, 0.2); /* Более заметная тень для светлой темы */
+  --card-shadow-dark: 0 8px 16px rgba(255, 255, 255, 0.1); /* Светлая тень для тёмной темы */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,13 +42,13 @@ body {
 }
 
 body.light {
-  background-color: white;
-  color: black;
+  background-color: var(--background-light-theme);
+  color: #333;
 }
 
 body.dark {
-  background-color: black;
-  color: white;
+  background-color: var(--background-dark);
+  color: #ccc;
 }
 
 

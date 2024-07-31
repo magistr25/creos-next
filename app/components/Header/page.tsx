@@ -28,7 +28,7 @@ const Header: React.FC = () => {
                 <h1 className={styles.title}>Creos CRM</h1>
             </div>
             <div className={styles.right_block}>
-                <p className={styles.weekNumber}>Current week number: {currentWeekNumber}</p>
+                <p className={styles.weekNumber}>Current week: {currentWeekNumber}</p>
                 <div className={styles.buttons}>
                     <button className={styles.button}>RU</button>
                     <button className={styles.button} onClick={toggleTheme}>
