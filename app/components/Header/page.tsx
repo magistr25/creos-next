@@ -1,27 +1,32 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
-import styles from './Header.module.css';
 import Image from 'next/image';
+import styles from './Header.module.css';
 
 const Header: React.FC = () => {
-    const currentWeekNumber = 31;
+    const currentWeekNumber = 31; // Предположим, что номер недели - 31
 
     return (
         <header className={styles.header}>
+            <div className={'logo'}>
             <Link href="/" legacyBehavior>
                 <a className={styles.logo}>
                     <Image
-                        src='https://static.tildacdn.com/tild3130-3965-4433-b632-323131643662/logo-Creos-Play-tran.png'
+                        src='/logo.png'
                         alt='logo'
-                        width={50}
-                        height={50}
+                        width={80}
+                        height={80}
                         className={styles.img}
+                        priority
                     />
                 </a>
             </Link>
             <h1 className={styles.title}>Creos CRM</h1>
+            </div>
             <div className={styles.right_block}>
-                <p className={styles.weekNumber}>Current Week Number: {currentWeekNumber}</p>
+                <p className={styles.weekNumber}>Current week number: {currentWeekNumber}</p>
                 <div className={styles.buttons}>
                     <button className={styles.button}>RU</button>
                     <button className={styles.button}>Dark</button>

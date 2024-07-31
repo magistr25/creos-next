@@ -4,7 +4,7 @@ const nextConfig = {
             remotePatterns: [
                 {
                     protocol: 'https',
-                    hostname: 'static.tildacdn.com',
+                    hostname: 'img.hhcdn.ru',
                     pathname: '**',
                 },
                 {

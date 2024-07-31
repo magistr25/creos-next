@@ -1,0 +1,36 @@
+.nav {
+    background-color: #6379F4; /* Цвет фона навигации */
+    padding: 0.5rem 1rem; /* Отступы */
+    display: flex;
+    justify-content: center; /* Центрирование навигационных ссылок */
+}
+
+.navList {
+    list-style: none; /* Убираем маркеры списка */
+    display: flex; /* Устанавливаем flex-контейнер */
+    gap: 1rem; /* Расстояние между элементами списка */
+    padding: 0;
+    margin: 0px;
+}
+
+.navItem {
+
+}
+
+.navLink {
+    text-decoration: none; /* Убираем подчеркивание ссылок */
+    color: white; /* Цвет текста ссылок */
+    font-size: 1.1rem; /* Размер текста */
+    padding: 0.5rem 1rem; /* Отступы внутри ссылок */
+    border-radius: 0.25rem; /* Скругление углов */
+    transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+    cursor: pointer; /* Указатель мыши при наведении */
+}
+
+.navLink:hover {
+    background-color: #4e5dc1; /* Цвет фона при наведении */
+}
+
+.active {
+    font-weight: bold; /* Жирный шрифт для активной вкладки */
+}
