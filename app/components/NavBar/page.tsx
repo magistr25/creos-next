@@ -14,21 +14,21 @@ const NavBar: React.FC = () => {
         <nav className={styles.nav}>
             <ul className={styles.navList}>
                 <li className={styles.navItem}>
-                    <Link href="/" passHref>
+                    <Link href="/">
                         <span className={`${styles.navLink} ${pathname === '/' ? styles.active : ''}`}>
                             {t('Main')}
                         </span>
                     </Link>
                 </li>
                 <li className={styles.navItem}>
-                    <Link href="/tasks" passHref>
+                    <Link href="/tasks">
                         <span className={`${styles.navLink} ${pathname === '/tasks' ? styles.active : ''}`}>
                             {t('Tasks')}
                         </span>
                     </Link>
                 </li>
                 <li className={styles.navItem}>
-                    <Link href="/designers" passHref>
+                    <Link href="/designers">
                         <span className={`${styles.navLink} ${pathname === '/designers' ? styles.active : ''}`}>
                             {t('Designers')}
                         </span>

@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 :root {
-
   --color-light: #ffffff;
   --color-dark: #343a40;
   --color-primary: #646cff;
@@ -33,8 +32,8 @@ body {
     )
     rgb(var(--background-start-rgb));
   min-height: 100vh;
-}
 
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -51,6 +50,8 @@ body.dark {
   color: #ccc;
 }
 
+
+
 @keyframes spinner {
   0% {
     transform: rotate(0deg);
@@ -58,6 +59,7 @@ body.dark {
   100% {
     transform: rotate(360deg);
   }
+
 }
 
 .spinner {
@@ -68,5 +70,6 @@ body.dark {
   width: 60px;
   height: 60px;
   animation: spinner 1.5s linear infinite;
+
 }
 
