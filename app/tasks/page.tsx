@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ClosedTasksChart from '../components/ClosedTasksChart/page';
 import { Task, getAllDesigners } from "../actions/apiDesigner";
 import { useTranslation } from "react-i18next";
-import './TasksPage.module.css';
+import styles from './TasksPage.module.css';
 
 const TasksPage: React.FC = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -39,10 +39,10 @@ const TasksPage: React.FC = () => {
     }
 
     return (
-        <div className="content">
-            <div className="chart-container">
+        <div className={styles.content}>
+            <div className={styles.container}>
                 <div>
-                    <h1 style={{ paddingLeft: '50px' }}>{t('Company statistics')}</h1>
+                    <h1  className={styles.h1}>{t('Company statistics')}</h1>
                     <ClosedTasksChart tasks={tasks} />
                 </div>
             </div>

@@ -5,6 +5,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { processData, getMonthData } from '../../utils/dataProcessing';
 import { useTranslation } from "react-i18next";
+import styles from './ClosedTasksChart.module.css';
 
 // регистрация плагинов Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels, ArcElement);
@@ -39,7 +40,7 @@ const ClosedTasksChart: React.FC<{ tasks: Task[] }> = ({ tasks }) => {
     };
 
     const [statusData, setStatusData] = useState<{ [key: string]: number }>({});
-    const [numCharts, setNumCharts] = useState<number>(2);
+    const [numCharts, setNumCharts] = useState<string>('2'); // Use string type for numCharts state
 
     useEffect(() => {
         const statusCounts: { [key: string]: number } = {};
@@ -81,72 +82,56 @@ const ClosedTasksChart: React.FC<{ tasks: Task[] }> = ({ tasks }) => {
             },
             title: {
                 display: true,
-                text: t('Task status ratio in percentages'),
+
             },
         },
     };
 
     return (
-        <div style={{ display: 'flex' }}>
-            <div className="card diagramma" style={{ height: '100%', marginLeft: '25px', display: 'inline-block' }}>
+        <div className={styles.card}>
+            <div className={styles.diagramma}>
                 <div>
-                    <h3 style={{ textAlign: 'center' }}>{t('Task status ratio in percentages')}</h3>
+                    <h3 className={styles.header} style={{ textAlign: 'center' }}>{t('Task status ratio in percentages')}</h3>
                     <Pie data={pieData} options={pieOptions} />
                 </div>
             </div>
-            <div className="charts-wrapper" style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                gap: '20px',
-                marginBottom: '20px',
-                width: '100%'
-            }}>
-                <div className='finans' style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: '20px',
-                    marginBottom: '10px',
-                    width: '100%',
-                }}>
-                    <h2 style={{ paddingLeft: '100px' }}>{t('Financial performance')}</h2>
+            <div className={styles.chartsWrapper}>
+                <div className={styles.finans}>
+                    <h2 className={styles.header} style={{ paddingLeft: '100px' }}>{t('Financial performance')}</h2>
                     <div style={{ width: '100%' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <label htmlFor="numCharts" style={{ marginLeft: '50px', paddingLeft: '50px', paddingRight: '10px' }}>{t('Choose the number of weeks:')}</label>
-                            <select id="numCharts" value={numCharts}
-                                    onChange={(e) => setNumCharts(Number(e.target.value))}>
-                                <option value={1}>{t('4 weeks')}</option>
-                                <option value={2}>{t('8 weeks')}</option>
-                                <option value={3}>{t('12 weeks')}</option>
+                        <div className={styles.selectContainer}>
+                            <label className={styles.label} htmlFor="numCharts">{t('Choose the number of weeks:')}</label>
+                            <select id="numCharts" className={styles.select} value={numCharts}
+                                    onChange={(e) => setNumCharts(e.target.value)}>
+                                <option value="1">{t('4 weeks')}</option>
+                                <option value="2">{t('8 weeks')}</option>
+                                <option value="3">{t('12 weeks')}</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div className="chart-container">
-                    {numCharts >= 1 && (
-                        <div className="card chart" style={{ color: 'black', marginBottom: '10px' }}>
-                            <h3>{t('Finances, current month')}</h3>
+                <div className={styles.chartContainer}>
+                    {Number(numCharts) >= 1 && (
+                        <div className={styles.chart}>
+                            <h3 className={styles.header}>{t('Finances, current month')}</h3>
                             <Bar data={{ labels: currentMonthData.labels, datasets: currentMonthData.datasets }}
                                  options={barOptions} />
                         </div>
                     )}
-                    {numCharts >= 2 && (
-                        <div className="card chart" style={{ color: 'black', marginBottom: '10px' }}>
-                            <h3>{t('Finances, last month')}</h3>
+                    {Number(numCharts) >= 2 && (
+                        <div className={styles.chart}>
+                            <h3 className={styles.header}>{t('Finances, last month')}</h3>
                             <Bar data={{ labels: lastMonthData.labels, datasets: lastMonthData.datasets }} options={barOptions} />
                         </div>
                     )}
-                    {numCharts >= 3 && (
-                        <div className="card chart" style={{ color: 'black' }}>
-                            <h3>{t('Finances, month before last')}</h3>
+                    {Number(numCharts) >= 3 && (
+                        <div className={styles.chart}>
+                            <h3 className={styles.header}>{t('Finances, month before last')}</h3>
                             <Bar data={{ labels: previousMonthData.labels, datasets: previousMonthData.datasets }} options={barOptions} />
                         </div>
                     )}
-                    {numCharts < 3 && <div className="card chart-placeholder"></div>}
-                    {numCharts < 2 && <div className="card chart-placeholder"></div>}
+                    {Number(numCharts) < 3 && <div className={styles.chartPlaceholder}></div>}
+                    {Number(numCharts) < 2 && <div className={styles.chartPlaceholder}></div>}
                 </div>
             </div>
         </div>
