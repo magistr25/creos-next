@@ -12,6 +12,7 @@ import { calculateMedian } from './utils/calculateMedian';
 import { formatDateDistanceDetailed } from './utils/formatDateDistanceDetailed';
 import styles from './page.module.css';
 
+
 // export const metadata: Metadata = {
 //     title: 'Creos Next',
 // }
@@ -118,7 +119,7 @@ export default function Home() {
     return (
         <div className={styles.wrapper}>
             {isLoading ? (
-                <h3 className={styles.loadingText}>{t('Loading...')}</h3>
+               <div className="spinner"/>
             ) : (
                 <div className={styles.container}>
                     <div>
@@ -147,7 +148,7 @@ export default function Home() {
                     <div>
                         <h2 className={styles.commentsHeading}>{t('User\'s comments')}</h2>
                         {comments.map(comment => (
-                            <div key={comment.id} className={styles.card}>
+                            <div key={comment.id} className={styles.card2}>
                                 <img
                                     src={comment.designer.avatar}
                                     alt={comment.designer.username}

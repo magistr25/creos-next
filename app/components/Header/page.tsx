@@ -1,19 +1,20 @@
 "use client";
 
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.css';
-import {useTheme} from '../../utils/ThemeContext';
-import {useTranslation} from 'react-i18next';
+import { useTheme } from '../../utils/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const Header: React.FC = () => {
     const currentWeekNumber = 31;
-    const {theme, toggleTheme, locale, setLocale} = useTheme();
-    const {t, i18n} = useTranslation();
+    const { theme, toggleTheme, locale, setLocale } = useTheme();
+    const { t, i18n } = useTranslation();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        i18n.changeLanguage(locale);
+        i18n.changeLanguage(locale).then(() => setLoading(false));
     }, [locale, i18n]);
 
     useEffect(() => {
@@ -29,6 +30,8 @@ const Header: React.FC = () => {
         toggleTheme();
     };
 
+
+
     return (
         <header className={styles.header}>
             <div className={styles.logo}>
@@ -42,9 +45,9 @@ const Header: React.FC = () => {
                             className={styles.img}
                             priority
                         />
-                        <h1 className={styles.title}>Creos CRM</h1>
                     </a>
                 </Link>
+                <h1 className={styles.title}>Creos CRM</h1>
             </div>
             <div className={styles.right_block}>
                 <p className={styles.weekNumber}>{t('currentWeek')}: {currentWeekNumber}</p>

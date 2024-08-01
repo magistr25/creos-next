@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface ThemeContextProps {
     theme: string;
@@ -12,26 +12,30 @@ const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const [theme, setTheme] = useState('light');
     const [locale, setLocaleState] = useState('en');
-
-    useEffect(() => {
-        const storedTheme = localStorage.getItem('theme');
-        const storedLocale = localStorage.getItem('locale');
-        if (storedTheme) setTheme(storedTheme);
-        if (storedLocale) setLocaleState(storedLocale);
-    }, []);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const toggleTheme = () => {
-        setTheme((prevTheme) => {
-            const newTheme = prevTheme === 'light' ? 'dark' : 'light';
-            localStorage.setItem('theme', newTheme);
-            return newTheme;
-        });
+        const newTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
     };
 
     const setLocale = (locale: string) => {
         setLocaleState(locale);
         localStorage.setItem('locale', locale);
     };
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const savedLocale = localStorage.getItem('locale') || 'en';
+        setTheme(savedTheme);
+        setLocaleState(savedLocale);
+        setIsLoaded(true);
+    }, []);
+
+    if (!isLoaded) {
+        return <div className="spinner"></div>; // Спиннер вместо "Loading..."
+    }
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme, locale, setLocale }}>
