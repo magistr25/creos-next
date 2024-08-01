@@ -67,9 +67,33 @@
 }
 
 .container {
-    padding: 0 50px;
+    padding: 0;
 }
 
 .loadingText {
     color: #7f88f1;
 }
+
+/* Медиа-запрос для маленьких экранов (например, планшеты) */
+@media (max-width: 780px) {
+    .flexContainer {
+        justify-content: space-around; /* Карточки занимают равное пространство */
+    }
+
+    .card {
+        width: calc(50% - 20px); /* Для 2-х колонок */
+    }
+}
+
+/* Медиа-запрос для очень маленьких экранов (например, мобильные устройства) */
+@media (max-width: 480px) {
+    .flexContainer {
+        display: block; /* Устанавливаем display block для контейнера */
+    }
+
+    .card {
+        width: 100%; /* Карточки занимают всю ширину */
+        margin-bottom: 20px; /* Добавляем отступ снизу между карточками */
+    }
+}
+
