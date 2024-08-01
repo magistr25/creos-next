@@ -4,20 +4,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { parseISO, formatDistance } from 'date-fns';
-import { RootState } from '../store/store.ts';
-import { setLoading } from '../store/loadingSlice.ts';
-import { fetchComments } from '../actions/apiComments.ts';
-import { getAllDesigners, Task } from '../actions/apiDesigner.ts';
-import { calculateMedian } from '../utils/calculateMedian.ts';
-import { formatDateDistanceDetailed } from '../utils/formatDateDistanceDetailed.ts';
+import { RootState } from '../store/store';
+import { setLoading } from '../store/loadingSlice';
+import { fetchComments } from '../actions/apiComments';
+import { getAllDesigners, Task } from '../actions/apiDesigner';
+import { calculateMedian } from '../utils/calculateMedian';
+import { formatDateDistanceDetailed } from '../utils/formatDateDistanceDetailed';
 import styles from './page.module.css';
 
-
-// export const metadata: Metadata = {
-//     title: 'Creos Next',
-// }
 // Типы для данных
-
 type Comment = {
     id: string;
     designer: {
@@ -34,6 +29,47 @@ interface Designer {
     username: string;
     totalTasks: number;
     medianTime: number;
+    score?: number;
+}
+
+function normalize(value: number, min: number, max: number): number {
+    return (value - min) / (max - min);
+}
+
+
+// calculateTopDesigners: Пояснение
+// Нормализация значений:
+//
+// Функция normalize нормализует значения в диапазон от 0 до 1.
+// Медиана времени нормализуется так, чтобы меньшие значения были лучше.
+// Количество задач нормализуется так, чтобы большие значения были лучше.
+// Взвешенная оценка:
+//
+// Итоговая оценка для каждого дизайнера рассчитывается как взвешенное среднее нормализованных значений медианы времени и количества задач.
+// Веса для медианы времени и количества задач установлены равными (0.5), но их можно изменить в зависимости от важности каждого показателя.
+// Сортировка дизайнеров:
+//
+// Дизайнеры сортируются по итоговой оценке в порядке убывания.
+// Рендеринг компонента:
+//
+// Компонент рендерит список топ-10 дизайнеров и комментарии пользователей.
+function calculateTopDesigners(designers: Designer[]): Designer[] {
+    const minMedianTime = Math.min(...designers.map(d => d.medianTime));
+    const maxMedianTime = Math.max(...designers.map(d => d.medianTime));
+    const minTotalTasks = Math.min(...designers.map(d => d.totalTasks));
+    const maxTotalTasks = Math.max(...designers.map(d => d.totalTasks));
+
+    return designers
+        .map(designer => {
+            const normalizedMedianTime = 1 - normalize(designer.medianTime, minMedianTime, maxMedianTime);
+            const normalizedTotalTasks = normalize(designer.totalTasks, minTotalTasks, maxTotalTasks);
+
+            // Взвешенная оценка (0.5 для медианы и 0.5 для задач)
+            const score = 0.5 * normalizedMedianTime + 0.5 * normalizedTotalTasks;
+
+            return { ...designer, score };
+        })
+        .sort((a, b) => b.score - a.score); // Сортировка по оценке в порядке убывания
 }
 
 export default function Home() {
@@ -47,13 +83,11 @@ export default function Home() {
         const fetchData = async () => {
             dispatch(setLoading(true));
             try {
-                // Запрашиваем данные для обоих компонентов
                 const [fetchedComments, fetchedDesigners] = await Promise.all([
                     fetchComments(),
                     getAllDesigners(),
                 ]);
 
-                // Обработка данных для дизайнеров
                 const designerData: { [key: string]: { avatar: string; username: string; times: number[]; totalTasks: number } } = {};
                 fetchedDesigners.forEach((task: Task) => {
                     if (task.status === 'Done' && task.date_finished_by_designer && task.date_started_by_designer && task.designer) {
@@ -76,10 +110,10 @@ export default function Home() {
                     medianTime: calculateMedian(designer.times),
                 }));
 
-                designersArray.sort((a, b) => a.medianTime - b.medianTime || b.totalTasks - a.totalTasks);
+                const topDesigners = calculateTopDesigners(designersArray);
 
                 setComments(fetchedComments);
-                setDesigners(designersArray.slice(0, 10));
+                setDesigners(topDesigners.slice(0, 10));
             } catch (error) {
                 console.error('Error:', error);
             } finally {
@@ -89,7 +123,6 @@ export default function Home() {
         fetchData();
         window.scrollTo(0, 0);
 
-        // Устанавливаем светлую тему при первом рендеринге
         document.body.classList.add(styles.lightTheme);
     }, [dispatch]);
 
@@ -119,7 +152,7 @@ export default function Home() {
     return (
         <div className={styles.wrapper}>
             {isLoading ? (
-               <div className="spinner"/>
+                <div className="spinner"/>
             ) : (
                 <div className={styles.container}>
                     <div>
@@ -136,10 +169,8 @@ export default function Home() {
                                     />
                                     <div>
                                         <p className={styles.bold}>{designer.username}</p>
-                                        <p><b>{t('Median time:')}</b> {
-                                            getFormatedTimes(formatDistance(0, designer.medianTime * 1000))
-                                        }</p>
-                                        <p><b>{t('Tasks completed:')}</b>{designer.totalTasks}</p>
+                                        <p><b>{t('Median time:')}</b> {getFormatedTimes(formatDistance(0, designer.medianTime * 1000))}</p>
+                                        <p><b>{t('Tasks completed:')}</b> {designer.totalTasks}</p>
                                     </div>
                                 </div>
                             ))}
@@ -166,8 +197,6 @@ export default function Home() {
                     </div>
                 </div>
             )}
-
         </div>
-
     );
 }
