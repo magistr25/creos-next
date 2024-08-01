@@ -1,20 +1,22 @@
 "use client";
-// import { Metadata } from 'next';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { parseISO, formatDistance } from 'date-fns';
 import { RootState } from './store/store';
 import { setLoading } from './store/loadingSlice';
-import { fetchComments } from './actions/apiComments.ts';
-import { getAllDesigners, Task} from './actions/apiDesigner.ts';
+import { fetchComments } from './actions/apiComments';
+import { getAllDesigners, Task } from './actions/apiDesigner';
 import { calculateMedian } from './utils/calculateMedian';
 import { formatDateDistanceDetailed } from './utils/formatDateDistanceDetailed';
+import styles from './page.module.css';
 
 // export const metadata: Metadata = {
 //     title: 'Creos Next',
 // }
 // Типы для данных
+
 type Comment = {
     id: string;
     designer: {
@@ -38,7 +40,7 @@ export default function Home() {
     const dispatch = useDispatch();
     const [comments, setComments] = useState<Comment[]>([]);
     const [designers, setDesigners] = useState<Designer[]>([]);
-    const { t} = useTranslation();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -87,95 +89,75 @@ export default function Home() {
         window.scrollTo(0, 0);
 
         // Устанавливаем светлую тему при первом рендеринге
-        document.body.classList.add('light-theme');
+        document.body.classList.add(styles.lightTheme);
     }, [dispatch]);
 
     function getFormatedTimes(s: string) {
         switch (s) {
             case "about 2 hours":
-                return t('about 2 hours')
+                return t('about 2 hours');
             case "about 3 hours":
-                return t('about 3 hours')
+                return t('about 3 hours');
             case "about 4 hours":
-                return t('about 4 hours')
+                return t('about 4 hours');
             case "about 5 hours":
-                return t('about 5 hours')
+                return t('about 5 hours');
             case "about 6 hours":
-                return t('about 6 hours')
+                return t('about 6 hours');
             case "about 7 hours":
-                return t('about 7 hours')
+                return t('about 7 hours');
             case "about 8 hours":
-                return t('about 8 hours')
+                return t('about 8 hours');
             case "about 9 hours":
-                return t('about 9 hours')
+                return t('about 9 hours');
+            default:
+                return s;
         }
-
     }
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             {isLoading ? (
-                <h3 style={{color:'#7f88f1'}}>{t('Loading...')}</h3>
+                <h3 className={styles.loadingText}>{t('Loading...')}</h3>
             ) : (
-                < div style={{padding: '0 50px'}}>
+                <div className={styles.container}>
                     <div>
-                        <h1 style={{color: '#7f88f1', marginBottom: '20px'}}>{t('Top 10 designers')}</h1>
-                        <div style={{display: 'flex', flexWrap: 'wrap', gap: '20px'}}>
+                        <h1 className={styles.heading}>{t('Top 10 designers')}</h1>
+                        <div className={styles.flexContainer}>
                             {designers.map(designer => (
-                                <div key={designer.username} className="card" style={{
-                                    border: '1px solid #ddd',
-                                    borderRadius: '8px',
-                                    padding: '10px',
-                                    width: 'calc(33% - 20px)', /* Для 3-х колонок */
-                                    boxSizing: 'border-box'
-                                }}>
+                                <div key={designer.username} className={styles.card}>
                                     <img
+                                        className={styles.img}
                                         src={designer.avatar}
                                         alt={`${designer.username}'s avatar`}
                                         width={50}
                                         height={50}
-                                        style={{
-                                            borderRadius: '50%',
-                                            float: 'left',
-                                            marginRight: '10px'
-                                        }}
                                     />
                                     <div>
-                                        <p style={{margin: '0', fontWeight: 'bold'}}>{designer.username}</p>
-                                        <p style={{margin: '0'}}><b>{t('Median time:')}</b> {
+                                        <p className={styles.bold}>{designer.username}</p>
+                                        <p><b>{t('Median time:')}</b> {
                                             getFormatedTimes(formatDistance(0, designer.medianTime * 1000))
                                         }</p>
-                                        <p style={{margin: '0'}}><b>{t('Tasks completed:')}</b>{designer.totalTasks}</p>
+                                        <p><b>{t('Tasks completed:')}</b>{designer.totalTasks}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
                     <div>
-                        <h2 style={{color: '#7f88f1', paddingTop: '20px', paddingBottom: '20px'}}>{t('User\'s comments')}</h2>
+                        <h2 className={styles.commentsHeading}>{t('User\'s comments')}</h2>
                         {comments.map(comment => (
-                            <div key={comment.id} className="card" style={{
-                                marginBottom: '20px',
-                                padding: '10px',
-                                border: '1px solid #ddd',
-                                borderRadius: '8px'
-                            }}>
+                            <div key={comment.id} className={styles.card}>
                                 <img
                                     src={comment.designer.avatar}
                                     alt={comment.designer.username}
-                                    style={{
-                                        width: '50px',
-                                        height: '50px',
-                                        borderRadius: '50%',
-                                        float: 'left',
-                                        marginRight: '10px'
-                                    }}
+                                    width={50}
+                                    height={50}
                                 />
                                 <div>
-                                    <div style={{fontWeight: 'bold'}}>{comment.designer.username}</div>
-                                    <div
-                                        style={{color: 'gray'}}>{formatDateDistanceDetailed(comment.date_created)}</div>
-                                    <div style={{fontWeight: 'bold', marginTop: '10px'}}>{comment.issue}</div>
+                                    <div className={styles.bold}>{comment.designer.username}</div>
+                                    <div className={styles.gray}>{formatDateDistanceDetailed(comment.date_created)}</div>
+                                    <div className={styles.bold} style={{ marginTop: '10px' }}>{comment.issue}</div>
                                     <div>{comment.message}</div>
                                 </div>
                             </div>
@@ -183,6 +165,8 @@ export default function Home() {
                     </div>
                 </div>
             )}
+
         </div>
+
     );
-};
+}

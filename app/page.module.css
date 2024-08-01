@@ -1,0 +1,75 @@
+/* page.module.css */
+.wrapper {
+    margin: 0;
+    padding: 20px 25px;
+    box-sizing: border-box;
+}
+
+.lightTheme {
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.darkTheme {
+    background-color: #2d2d2d;
+    color: #ffffff;
+}
+
+.heading {
+    color: #7f88f1;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 1.5rem; /* Увеличиваем отступ снизу */
+}
+
+.flexContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Выравнивание по центру */
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    width: calc(33% - 20px); /* Для 3-х колонок */
+    box-sizing: border-box;
+    background-color: #ffffff; /* Белый фон для карточек */
+    color: #000000; /* Черный текст */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Добавляем тень для карточек */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Плавный переход для трансформации и тени */
+}
+
+.card img {
+    border-radius: 50%;
+    float: left;
+    margin-right: 10px;
+}
+
+.card:hover, .card:active, .card:focus {
+    transform: translateY(-10px); /* Сдвигаем карточку вверх при наведении или активации */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Более сильная тень при наведении или активации */
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.gray {
+    color: gray;
+}
+
+.commentsHeading {
+    color: #7f88f1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.container {
+    padding: 0 50px;
+}
+
+.loadingText {
+    color: #7f88f1;
+}
