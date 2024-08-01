@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     background-color: #5466f4;
     color: white;
     border-bottom: 1px solid white
@@ -22,7 +22,7 @@
 }
 
 .title {
-    margin: 0 1rem;
+    /*margin: 0 1rem;*/
     font-size: 1.5rem;
 }
 
