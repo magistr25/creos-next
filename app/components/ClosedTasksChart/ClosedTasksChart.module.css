@@ -1,6 +1,7 @@
 .card {
     display: flex;
      padding:0 20px;
+    min-width: 320px;
     }
 .diagramma {
     min-width: 320px;
@@ -120,13 +121,14 @@
     color: black;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 360px) {
     .card {
         display: flex;
-        padding:0 20px;
+        padding: 1px;
         flex-direction: column;
         flex-wrap: wrap;
-
-
     }
+
+
+
 }
