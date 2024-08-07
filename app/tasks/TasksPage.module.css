@@ -1,12 +1,13 @@
-
-
-
-
 .h1 {
-    padding: 60px;
+    padding: 25px;
     color: #7f88f1;
     font-size: 30px;
     font-weight: bold;
 
 }
 
+@media (max-width: 480px) {
+    .h1 {
+        font-size: 28px;
+    }
+}
